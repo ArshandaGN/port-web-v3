@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Apply Poppins font globally and set base styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  @apply bg-primary-light text-text-light; /* Default light mode colors */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme change */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Dark mode styles applied when 'dark' class is present on html */
+html.dark body {
+  @apply bg-primary-dark text-text-dark; /* Apply dark mode colors */
+}
+
+/* Basic reset for elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Smooth scroll behavior for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom styles for Boxicons (if needed, though Tailwind handles most of it) */
+.bx {
+  vertical-align: middle; /* Align icons better with text */
+}
+
+/* Ensure images fill their containers properly */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
