@@ -1,12 +1,17 @@
+import ikon1 from '../assets/ikon1.png';
+import arshan1 from '../assets/arshan1.png';
+
 // --- Data for Portfolio (Static) ---
+
 export const portfolioData = {
   profile: {
-    name: "Arshanda Geulis Nawajaputri",
+    name: "Arshanda",
     shortProfile: "Mahasiswa semester 6 Jurusan Ilmu Komputer di Universitas Pertamina dengan minat besar di bidang Data Analysis, UI/UX Design, dan Front-End Development. Terampil menggunakan Python, Flutter, Figma, dan Laravel, serta berpengalaman dalam proyek klasifikasi citra, pengembangan aplikasi mobile/web, dan visualisasi data. Aktif dalam organisasi, adaptif, komunikatif, dan memiliki semangat belajar yang tinggi. Selalu antusias untuk mempelajari teknologi baru dan mengembangkan solusi yang inovatif dan aplikatif.",
     homeDescription: "Selamat datang di portofolio saya! Saya Arshanda, seorang mahasiswa Ilmu Komputer yang bersemangat dalam pengembangan web dan teknologi. Di sini, Anda dapat melihat karya dan proyek yang telah saya buat. Mari terhubung dan berkolaborasi!",
-    role: "Data Analyst, UI/UX Design, and Front-End Developer", // Updated role
-    personalImage: "https://placehold.co/400x400/00abf0/ffffff?text=Arshanda", // Placeholder image
-    cvLink: "https://drive.google.com/file/d/1_YOUR_CV_LINK_HERE/view?usp=sharing", // REPLACE WITH YOUR ACTUAL GOOGLE DRIVE CV LINK
+    role: "Data Analyst | UI/UX Design| Front-End Developer", // Updated role
+    personalImage1: ikon1, 
+    personalImage2: arshan1,// Placeholder image
+    cvLink: "https://drive.google.com/file/d/1yJCpgLt199NoA-qVnx4up9e0DvY08opo/view?usp=sharing", // REPLACE WITH YOUR ACTUAL GOOGLE DRIVE CV LINK
   },
   // Education section removed as per user request
   skills: {

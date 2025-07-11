@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // Enable dark mode based on the 'class' present on the HTML element
   darkMode: 'class',
   content: [
     "./index.html",
@@ -9,27 +8,33 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        // Define Poppins as the primary font
         poppins: ['Poppins', 'sans-serif'],
       },
       colors: {
-        // Define custom colors for light and dark themes
-        // Dark Mode Palette
-        'primary-dark': '#081b29', // Main background dark
-        'secondary-dark': '#1e2a38', // Card/secondary background dark
-        'text-dark': '#ededed', // Main text light
-        'text-secondary-dark': '#a0a0a0', // Secondary text light
-        'accent-dark': '#00abf0', // Accent color
+        // Dark mode
+        'primary-dark': '#081b29',
+        'secondary-dark': '#1e2a38',
+        'text-dark': '#ededed',
+        'text-secondary-dark': '#a0a0a0',
+        'accent-dark': '#00abf0',
 
-        // Light Mode Palette
-        'primary-light': '#f3f3f3', // Main background light
-        'secondary-light': '#ffffff', // Card/secondary background light
-        'text-light': '#081b29', // Main text dark
-        'text-secondary-light': '#555555', // Secondary text dark
-        'accent-light': '#00abf0', // Accent color (same for consistency)
+        // Light mode
+        'primary-light': '#f3f3f3',
+        'secondary-light': '#ffffff',
+        'text-light': '#081b29',
+        'text-secondary-light': '#555555',
+        'accent-light': '#00abf0',
+      },
+      animation: {
+        gradient: 'gradientBG 10s ease infinite',
+      },
+      keyframes: {
+        gradientBG: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
       },
     },
   },
   plugins: [],
 }
-

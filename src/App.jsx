@@ -210,26 +210,28 @@ const Header = () => {
 // Home Component
 const Home = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center py-20 px-4 md:px-10 bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark">
+    <section id="home" className="min-h-screen flex items-center justify-center py-10 px-4 md:px-10 bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark relative overflow-hidden">
+      <div className="absolute inset-0 -z-10 animate-gradient bg-gradient-to-r from-[#6EE7B7] via-[#3B82F6] to-[#9333EA] bg-[length:400%_400%] opacity-40 blur-2xl"></div>
+
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
         {/* Image for Mobile/Tablet, Text for PC */}
         <div className="md:hidden flex-shrink-0" data-aos="fade-down">
           <img
-            src={portfolioData.profile.personalImage}
+            src={portfolioData.profile.personalImage1}
             alt="Gambar Arshanda"
-            className="w-64 h-64 rounded-full object-cover shadow-lg border-4 border-accent-light dark:border-accent-light"
+            className="w-72 h-64 transition-transform duration-300 transform hover:scale-105 hover:rotate1 hover:shadow-xl"
           />
         </div>
 
         {/* Home Content */}
-        <div className="w-full md:w-1/2 text-center md:text-left" data-aos="fade-right">
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-2">
+        <div className="w-full text-center md:text-justify" data-aos="fade-right">
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-3">
             Hai, Saya <span className="text-primary-dark dark:text-text-dark">{portfolioData.profile.name}</span> {/* Name color adjusted */}
           </h1>
-          <h3 className="text-2xl md:text-4xl font-semibold text-accent-light dark:text-accent-light mb-4">
+          <h3 className="text-2xl md:text-3xl font-semibold text-accent-light dark:text-accent-light mb-4">
             {portfolioData.profile.role}
           </h3>
-          <p className="text-base md:text-lg mb-8 max-w-lg mx-auto md:mx-0">
+          <p className="text-base md:text-sm mb-8 max-w-lg mx-auto md:mx-0">
             {portfolioData.profile.homeDescription}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mb-8">
@@ -265,9 +267,9 @@ const Home = () => {
         {/* Image for PC */}
         <div className="hidden md:flex flex-shrink-0" data-aos="fade-left">
           <img
-            src={portfolioData.profile.personalImage}
+            src={portfolioData.profile.personalImage1}
             alt="Gambar Arshanda"
-            className="w-80 h-80 rounded-full object-cover shadow-lg border-4 border-accent-light dark:border-accent-light"
+            className="w-120 h-120 transition-transform duration-300 transform hover:scale-105 hover:rotate1 hover:shadow-xl"
           />
         </div>
       </div>
@@ -283,9 +285,9 @@ const About = () => {
         {/* Image for Mobile/Tablet */}
         <div className="md:hidden flex-shrink-0" data-aos="fade-down">
           <img
-            src={portfolioData.profile.personalImage}
+            src={portfolioData.profile.personalImage2}
             alt="Gambar Arshanda"
-            className="w-64 h-64 rounded-full object-cover shadow-lg border-4 border-accent-light dark:border-accent-light"
+            className="w-52 h-64 transition-transform duration-300 transform hover:scale-105 hover:rotate1 hover:shadow-xl"
           />
         </div>
 
@@ -300,9 +302,9 @@ const About = () => {
         {/* Image for PC */}
         <div className="hidden md:flex flex-shrink-0" data-aos="fade-left">
           <img
-            src={portfolioData.profile.personalImage}
+            src={portfolioData.profile.personalImage2}
             alt="Gambar Arshanda"
-            className="w-80 h-80 rounded-full object-cover shadow-lg border-4 border-accent-light dark:border-accent-light"
+            className="w-60 h-80 transition-transform duration-300 transform hover:scale-105 hover:rotate1 hover:shadow-xl"
           />
         </div>
       </div>
@@ -1049,7 +1051,7 @@ const App = () => {
         </style>
         <div className="font-poppins antialiased min-h-screen">
           <Header />
-          <main className="pt-20"> {/* Add padding-top to account for fixed header */}
+          <main className="pt-8"> {/* Add padding-top to account for fixed header */}
             <Home />
             <About />
             {/* <Education /> -- Removed as per request */}
