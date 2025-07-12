@@ -10,6 +10,9 @@ module.exports = {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
+      transitionProperty: {
+      height: 'height'
+      },
       colors: {
         // Dark mode
         'primary-dark': '#081b29',
@@ -27,12 +30,20 @@ module.exports = {
       },
       animation: {
         gradient: 'gradientBG 10s ease infinite',
+        blob1: 'blobMove 25s infinite ease-in-out',
+        blob2: 'blobMove 30s infinite ease-in-out',
+        blob3: 'blobMove 35s infinite ease-in-out',
       },
       keyframes: {
         gradientBG: {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
+        blobMove: {
+          '0%, 100%': { transform: 'translate(0, 0)' },
+          '50%': { transform: 'translate(30px, -20px)' },
+        },
+
       },
     },
   },

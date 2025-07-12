@@ -1,8 +1,7 @@
 import React, { useState, useEffect, createContext, useContext, useRef } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, where, getDocs } from 'firebase/firestore';
-import { Mail, Github, Linkedin, Instagram, FileText, Menu, X, Sun, Moon, Link as LinkIcon, Code, BookOpen, Briefcase, User, Star, MessageSquare, ChevronDown, ChevronUp, Play, Lightbulb } from 'lucide-react'; // Added Lightbulb icon for project ideas
+import { Mail, Github, Linkedin, Instagram, FileText, Menu, X, Sun, Moon, Link as LinkIcon, Code, BookOpen, Briefcase, User, Star, MessageSquare, ChevronDown, ChevronRight, ChevronUp, Play, Lightbulb } from 'lucide-react'; // Added Lightbulb icon for project ideas
+import { motion, AnimatePresence, useInView} from 'framer-motion';
+import { Typewriter } from "react-simple-typewriter";
 
 // --- Global Context for Theme and Firebase ---
 const ThemeContext = createContext();
@@ -44,72 +43,6 @@ const ThemeProvider = ({ children }) => {
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
-  );
-};
-
-// Firebase Provider Component
-const FirebaseProvider = ({ children }) => {
-  const [db, setDb] = useState(null);
-  const [auth, setAuth] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [isAuthReady, setIsAuthReady] = useState(false);
-
-  useEffect(() => {
-    try {
-      // Access global variables provided by the Canvas environment
-      const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-      const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-      const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-      if (!firebaseConfig) {
-        console.error("Firebase config is not defined. Please ensure __firebase_config is available.");
-        return;
-      }
-
-      const app = initializeApp(firebaseConfig);
-      const firestoreDb = getFirestore(app);
-      const firebaseAuth = getAuth(app);
-
-      setDb(firestoreDb);
-      setAuth(firebaseAuth);
-
-      // Sign in using custom token or anonymously
-      const signIn = async () => {
-        try {
-          if (initialAuthToken) {
-            await signInWithCustomToken(firebaseAuth, initialAuthToken);
-          } else {
-            await signInAnonymously(firebaseAuth);
-          }
-        } catch (error) {
-          console.error("Firebase authentication error:", error);
-        }
-      };
-
-      signIn();
-
-      // Listen for auth state changes
-      const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
-        if (user) {
-          setUserId(user.uid);
-          console.log("Firebase User ID:", user.uid);
-        } else {
-          setUserId(crypto.randomUUID()); // Fallback for unauthenticated users
-          console.log("Signed in anonymously or user not found. Using random UUID for userId.");
-        }
-        setIsAuthReady(true);
-      });
-
-      return () => unsubscribe(); // Cleanup auth listener
-    } catch (error) {
-      console.error("Error initializing Firebase:", error);
-    }
-  }, []);
-
-  return (
-    <FirebaseContext.Provider value={{ db, auth, userId, isAuthReady }}>
-      {children}
-    </FirebaseContext.Provider>
   );
 };
 
@@ -210,109 +143,167 @@ const Header = () => {
 // Home Component
 const Home = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center py-10 px-4 md:px-10 bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 animate-gradient bg-gradient-to-r from-[#6EE7B7] via-[#3B82F6] to-[#9333EA] bg-[length:400%_400%] opacity-40 blur-2xl"></div>
+    <section
+      id="home"
+      className="min-h-screen flex items-center justify-center py-20 px-6 sm:px-10 md:px-12 
+        bg-gradient-to-b from-white via-[#eff6ff] to-[#f0f4fe]
+        dark:from-[#081b29] dark:via-[#1e2a38] dark:to-black
+        text-primary-dark dark:text-white relative overflow-hidden"
+    >
+      {/* Background gradient effect */}
+      <div className="absolute inset-0 -z-10 animate-gradient bg-gradient-to-r from-[#6EE7B7] via-[#3B82F6] to-[#9333EA] bg-[length:400%_400%] opacity-30 blur-3xl" />
 
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
-        {/* Image for Mobile/Tablet, Text for PC */}
-        <div className="md:hidden flex-shrink-0" data-aos="fade-down">
+      <div className="max-w-7xl w-full mx-auto flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
+        {/* Image Section */}
+        <motion.div
+          className="w-full md:w-1/2 flex justify-center order-1 md:order-2"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+        >
           <img
             src={portfolioData.profile.personalImage1}
-            alt="Gambar Arshanda"
-            className="w-72 h-64 transition-transform duration-300 transform hover:scale-105 hover:rotate1 hover:shadow-xl"
+            alt="Foto Arshanda"
+            className="w-72 md:w-96 h-auto rounded-xl shadow-lg hover:scale-105 hover:rotate-1 transition-transform duration-300"
           />
-        </div>
+        </motion.div>
 
-        {/* Home Content */}
-        <div className="w-full text-center md:text-justify" data-aos="fade-right">
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-3">
-            Hai, Saya <span className="text-primary-dark dark:text-text-dark">{portfolioData.profile.name}</span> {/* Name color adjusted */}
+        {/* Text Section */}
+        <motion.div
+          className="w-full md:w-1/2 text-center md:text-left order-2 md:order-1"
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4 text-primary-dark dark:text-white drop-shadow-md">
+            Hai, Saya{" "}
+            <span className="text-accent-light drop-shadow-[0_2px_5px_rgba(59,130,246,0.8)]">
+              {portfolioData.profile.name}
+            </span>
           </h1>
-          <h3 className="text-2xl md:text-3xl font-semibold text-accent-light dark:text-accent-light mb-4">
-            {portfolioData.profile.role}
+
+          <h3 className="text-xl md:text-2xl font-semibold text-accent-light dark:text-accent-light mb-4 drop-shadow-sm">
+            <Typewriter
+              words={["Data Analyst", "UI/UX Designer", "Front-End Developer"]}
+              loop
+              cursor
+              cursorStyle="|"
+              typeSpeed={80}
+              deleteSpeed={50}
+              delaySpeed={2000}
+            />
           </h3>
-          <p className="text-base md:text-sm mb-8 max-w-lg mx-auto md:mx-0">
+
+          <p className="text-base md:text-lg text-text-secondary-light dark:text-text-secondary-dark mb-6">
             {portfolioData.profile.homeDescription}
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mb-8">
+
+          <div className="flex flex-wrap gap-3 mb-6 justify-center md:justify-start">
+            <span className="px-3 py-1 bg-white/40 dark:bg-white/20 border border-white/40 dark:border-white/30 rounded-full text-sm font-medium text-primary-dark dark:text-white">
+              🚀 Open for Internship
+            </span>
+            <span className="px-3 py-1 bg-white/40 dark:bg-white/20 border border-white/40 dark:border-white/30 rounded-full text-sm font-medium text-primary-dark dark:text-white">
+              🎨 Design & Code
+            </span>
+            <span className="px-3 py-1 bg-white/40 dark:bg-white/20 border border-white/40 dark:border-white/30 rounded-full text-sm font-medium text-primary-dark dark:text-white">
+              📊 Data Enthusiast
+            </span>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center md:justify-start">
             <a
               href={portfolioData.profile.cvLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 py-3 border-2 border-accent-light dark:border-accent-light rounded-lg text-lg font-semibold bg-accent-light dark:bg-accent-light text-primary-dark dark:text-primary-dark hover:bg-transparent hover:text-accent-light dark:hover:text-accent-light transition-all duration-300 shadow-md"
+              className="inline-flex items-center justify-center px-6 py-3 border-2 border-accent-light rounded-lg text-lg font-semibold bg-accent-light text-primary-dark hover:bg-transparent hover:text-accent-light transition-all duration-300 shadow-md"
             >
               <FileText size={20} className="mr-2" /> Lihat CV
             </a>
-            {/* New "Kirim Pesan" button */}
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="inline-flex items-center justify-center px-6 py-3 border-2 border-accent-light dark:border-accent-light rounded-lg text-lg font-semibold bg-transparent text-accent-light dark:text-accent-light hover:bg-accent-light hover:text-primary-dark dark:hover:text-primary-dark transition-all duration-300 shadow-md"
+            <a
+              href="#contact"
+              className="inline-flex items-center justify-center px-6 py-3 border-2 border-accent-light rounded-lg text-lg font-semibold text-accent-light hover:bg-accent-light hover:text-primary-dark transition-all duration-300 shadow-md"
             >
               <Mail size={20} className="mr-2" /> Kirim Pesan
-            </button>
-          </div>
-          <div className="flex justify-center md:justify-start space-x-6">
-            <a href="mailto:arshandagn06@gmail.com" className="text-accent-light dark:text-accent-light hover:text-primary-dark dark:hover:text-primary-dark bg-secondary-light dark:bg-secondary-dark p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-md" aria-label="Email">
-              <i className='bx bx-envelope text-2xl'></i>
-            </a>
-            <a href="https://www.instagram.com/arshndasvnch" target="_blank" rel="noopener noreferrer" className="text-accent-light dark:text-accent-light hover:text-primary-dark dark:hover:text-primary-dark bg-secondary-light dark:bg-secondary-dark p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-md" aria-label="Instagram">
-              <i className='bx bxl-instagram text-2xl'></i>
-            </a>
-            <a href="https://www.linkedin.com/in/arshandagn" target="_blank" rel="noopener noreferrer" className="text-accent-light dark:text-accent-light hover:text-primary-dark dark:hover:text-primary-dark bg-secondary-light dark:bg-secondary-dark p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-md" aria-label="LinkedIn">
-              <i className='bx bxl-linkedin text-2xl'></i>
             </a>
           </div>
-        </div>
 
-        {/* Image for PC */}
-        <div className="hidden md:flex flex-shrink-0" data-aos="fade-left">
-          <img
-            src={portfolioData.profile.personalImage1}
-            alt="Gambar Arshanda"
-            className="w-120 h-120 transition-transform duration-300 transform hover:scale-105 hover:rotate1 hover:shadow-xl"
-          />
-        </div>
+          <div className="flex justify-center md:justify-start space-x-5">
+            {[
+              { icon: "bx bx-envelope", url: "mailto:arshandagn06@gmail.com" },
+              { icon: "bx bxl-instagram", url: "https://www.instagram.com/arshndasvnch" },
+              { icon: "bx bxl-linkedin", url: "https://www.linkedin.com/in/arshandagn" },
+            ].map((item, idx) => (
+              <a
+                key={idx}
+                href={item.url}
+                className="text-accent-light hover:text-white bg-secondary-light dark:bg-secondary-dark p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-md"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className={`${item.icon} text-2xl`}></i>
+              </a>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 };
 
-// About Component
+
 const About = () => {
   return (
     <section
       id="about"
-      className="min-h-screen flex items-center py-20 px-6 sm:px-10 md:px-12 lg:px-16 bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark"
+      className="relative min-h-screen flex items-center py-20 px-6 sm:px-8 md:px-12 lg:px-16
+        bg-gradient-to-b from-[#f0f4ff] via-[#dbeafe] to-primary-light
+        dark:from-black dark:via-[#1e2a38] dark:to-[#081b29]
+        text-text-light dark:text-text-dark"
     >
-      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-12 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-10">
-
-        {/* Image for Mobile/Tablet */}
-        <div className="md:hidden flex-shrink-0" data-aos="fade-down">
+      {/* Content */}
+      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
+        {/* Image Section */}
+        <motion.div
+          className="flex-shrink-0"
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
           <img
             src={portfolioData.profile.personalImage2}
-            alt="Gambar Arshanda"
-            className="w-52 h-64 transition-transform duration-300 transform hover:scale-105 hover:rotate-1 hover:shadow-xl"
+            alt="Foto Arshanda"
+            className="w-56 md:w-64 lg:w-72 h-auto rounded-xl shadow-lg hover:scale-105 hover:rotate-1 transition-all duration-300"
           />
-        </div>
+        </motion.div>
 
-        {/* About Content */}
-        <div className="w-full md:w-1/2 text-justify" data-aos="fade-right">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary-dark dark:text-text-dark">
-            Tentang Saya
+        {/* Text Section */}
+        <motion.div
+          className="w-full md:w-3/5 text-left"
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-primary-dark dark:text-white">
+            Kenalin, Aku Arshanda Geulis Nawajaputri 
           </h2>
-          <p className="text-base md:text-lg leading-relaxed tracking-normal text-text-secondary-light dark:text-text-secondary-dark text-justify">
-            {portfolioData.profile.shortProfile}
-          </p>
-        </div>
 
-        {/* Image for PC */}
-        <div className="hidden md:flex flex-shrink-0" data-aos="fade-left">
-          <img
-            src={portfolioData.profile.personalImage2}
-            alt="Gambar Arshanda"
-            className="w-60 h-80 transition-transform duration-300 transform hover:scale-105 hover:rotate-1 hover:shadow-xl"
-          />
-        </div>
+          <p className="text-base md:text-lg leading-relaxed text-text-secondary-light dark:text-text-secondary-dark mb-6">
+            Aku adalah mahasiswa <span className="font-semibold text-accent-light">Ilmu Komputer</span> yang sedang aktif mengembangkan diri
+            di bidang <span className="font-semibold text-accent-light">Data Analysis</span>, <span className="font-semibold text-accent-light">UI/UX Design</span>, dan <span className="font-semibold text-accent-light">Front-End Development</span>.
+            Saat ini aku sedang mencari kesempatan untuk magang dan berkontribusi langsung di dunia kerja.
+          </p>
+
+          <p className="text-base md:text-lg leading-relaxed text-text-secondary-light dark:text-text-secondary-dark mb-6">
+            Aku terbiasa menggunakan tools seperti <span className="font-semibold">Python, Figma, JavaScript</span>, dan berbagai alat
+            kolaborasi lainnya. Selain itu, aku aktif dalam organisasi kampus dan punya semangat belajar yang tinggi.
+          </p>
+
+          <div className="flex flex-wrap gap-3 mt-4">
+            <span className="px-3 py-1 bg-accent-light text-white rounded-full text-sm font-medium">Open for Internship</span>
+            <span className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-sm font-medium">Data & Front-End</span>
+            <span className="px-3 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full text-sm font-medium">Creative Problem Solver</span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -329,37 +320,127 @@ const getSkillIcon = (icon) => {
     );
 }
 
-// Skills Component
 const Skills = () => {
+  const categories = ['Coding', 'Data Tools', 'Design'];
+  const [activeCategory, setActiveCategory] = useState('Coding');
+
+  const skillGroups = portfolioData.skills.technical;
+  const filteredSkills = skillGroups[
+    activeCategory === 'Coding'
+      ? 'programming'
+      : activeCategory === 'Data Tools'
+      ? 'dataTools'
+      : 'designTools'
+  ];
+
   return (
-    <section id="skills" className="py-20 px-4 md:px-10 bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark">
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-primary-dark dark:text-text-dark" data-aos="fade-up">Keahlian Saya</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12">
-          {portfolioData.skills.technical.map((skill, index) => (
-            <a
-            key={index}
-            href={skill.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center p-4 bg-card-light dark:bg-card-dark rounded-xl shadow-md transform hover:scale-105 transition-all duration-300 hover:-translate-y-1 hover:ring-2 hover:ring-accent-light dark:hover:ring-accent-light hover:bg-white/30 dark:hover:bg-white/10"
-            data-aos="zoom-in"
-            data-aos-delay={index * 100}>
-            <img
-              src={skill.icon}
-              alt={`${skill.name} icon`}
-              className="w-10 h-10 mb-3 object-contain"
-            />
-            <p className="text-lg font-medium text-primary-dark dark:text-text-dark">{skill.name}</p>
-          </a>
+    <section
+      id="skills"
+      className="relative py-20 px-6 sm:px-8 md:px-12 bg-gradient-to-b from-primary-light via-blue-50 to-secondary-light dark:from-primary-dark dark:via-gray-800 dark:to-black text-text-light dark:text-text-dark"
+    >
+      {/* Blob Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-72 h-72 rounded-full blur-3xl opacity-30 bg-pink-300 dark:bg-pink-800 top-[-5rem] left-[-5rem] animate-blob1 mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute w-72 h-72 rounded-full blur-3xl opacity-30 bg-blue-300 dark:bg-blue-800 bottom-[-4rem] right-[-4rem] animate-blob2 mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute w-72 h-72 rounded-full blur-3xl opacity-30 bg-purple-300 dark:bg-purple-800 top-[40%] left-[45%] animate-blob3 mix-blend-multiply dark:mix-blend-lighten" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto text-center">
+        <motion.h2
+          className="text-4xl md:text-5xl font-bold mb-8 text-primary-dark dark:text-text-dark"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          Keahlian Saya
+        </motion.h2>
+
+        {/* Tabs */}
+        <motion.div
+          className="flex justify-center gap-4 mb-10 flex-wrap"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-5 py-2 rounded-full font-medium transition-all duration-300 text-sm md:text-base shadow-sm ${
+                activeCategory === cat
+                  ? 'bg-accent-light text-white'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              }`}
+            >
+              {cat}
+            </button>
           ))}
-        </div>
-        <h3 className="text-3xl md:text-4xl font-bold mb-8 text-primary-dark dark:text-text-dark" data-aos="fade-up">Kemampuan Interpersonal</h3>
-        <ul className="list-disc list-inside text-left mx-auto max-w-2xl text-base md:text-lg text-text-secondary-light dark:text-text-secondary-dark space-y-2" data-aos="fade-up" data-aos-delay="200">
+        </motion.div>
+
+        {/* Grid Skills */}
+        <motion.div
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-16"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          {filteredSkills.map((skill, index) => (
+            <motion.a
+              key={index}
+              href={skill.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center p-4 bg-card-light dark:bg-card-dark rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+              whileHover={{ y: -4 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+            >
+              <img
+                src={skill.icon}
+                alt={`${skill.name} icon`}
+                className="w-10 h-10 mb-3 object-contain pointer-events-none"
+              />
+              <p className="text-sm font-medium text-primary-dark dark:text-white pointer-events-none">
+                {skill.name}
+              </p>
+            </motion.a>
+          ))}
+        </motion.div>
+
+        {/* Interpersonal Skills */}
+        <motion.h3
+          className="text-3xl md:text-4xl font-bold mb-6 text-primary-dark dark:text-text-dark"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          Kemampuan Interpersonal
+        </motion.h3>
+
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
           {portfolioData.skills.interpersonal.map((item, index) => (
-            <li key={index}>{item}</li>
+            <motion.div
+              key={index}
+              className="p-5 bg-white dark:bg-card-dark rounded-xl shadow-md text-left border-l-4 border-accent-light"
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h4 className="text-lg font-semibold text-primary-dark dark:text-white mb-2">
+                {item.title}
+              </h4>
+              <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                {item.desc}
+              </p>
+            </motion.div>
           ))}
-        </ul>
+        </motion.div>
       </div>
     </section>
   );
@@ -367,318 +448,309 @@ const Skills = () => {
 
 // Experience Section with Accordion Cards
 const ExperienceSection = () => {
-  const [openAccordion, setOpenAccordion] = useState(null); // State to manage which accordion is open
+  const [openIndex, setOpenIndex] = useState(null);
 
   const toggleAccordion = (index) => {
-    setOpenAccordion(openAccordion === index ? null : index);
+    setOpenIndex(prev => prev === index ? null : index);
   };
 
   return (
-    <section id="experience" className="py-20 px-4 md:px-10 bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark">
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-primary-dark dark:text-text-dark" data-aos="fade-up">Pengalaman Saya</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> {/* 3 columns layout */}
+    <section
+      id="experience"
+      className="relative py-20 px-6 sm:px-8 md:px-12 bg-gradient-to-b from-secondary-light via-[#e6f0ff] to-primary-light dark:from-black dark:via-[#0f172a] dark:to-[#081b29] text-primary-dark dark:text-text-dark transition-all"
+    >
+      <div className="relative z-10 max-w-7xl mx-auto text-center">
+        <motion.h2
+          className="text-4xl md:text-5xl font-bold mb-10"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          Pengalaman Saya
+        </motion.h2>
+
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.7 }}
+        >
           {portfolioData.experiences.map((exp, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition-transform duration-300 flex flex-col"
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
+              className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg p-6 flex flex-col justify-between text-left"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
             >
-              <div className="p-6 flex-grow">
+              <div>
                 <p className="text-sm font-semibold text-accent-light dark:text-accent-light mb-1">{exp.type}</p>
-                <h4 className="text-xl md:text-2xl font-semibold text-primary-dark dark:text-text-dark mb-1">{exp.title}</h4>
+                <h4 className="text-xl md:text-2xl font-semibold mb-1">{exp.title}</h4>
                 <p className="text-lg font-medium text-text-secondary-light dark:text-text-secondary-dark mb-2">{exp.organization}</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{exp.years}</p>
               </div>
-              <div className="p-6 pt-0">
-                <button
-                  onClick={() => toggleAccordion(index)}
-                  className="w-full flex justify-between items-center px-4 py-2 bg-primary-light dark:bg-primary-dark text-accent-light dark:text-accent-light rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
-                >
-                  Job Description
-                  {openAccordion === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                </button>
-                {openAccordion === index && (
-                  <div className="mt-4 text-left text-base text-text-secondary-light dark:text-text-secondary-dark">
-                    <ul className="list-disc list-inside space-y-1">
+
+              <button
+                onClick={() => toggleAccordion(index)}
+                className="mt-auto flex justify-between items-center px-4 py-2 bg-primary-light dark:bg-primary-dark text-accent-light dark:text-accent-light rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
+              >
+                Job Description
+                {openIndex === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </button>
+
+              <AnimatePresence initial={false}>
+                {openIndex === index && (
+                  <motion.div
+                    key="desc"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="overflow-hidden mt-4"
+                  >
+                    <ul className="list-disc list-inside space-y-2 text-base text-text-secondary-light dark:text-text-secondary-dark">
                       {exp.description.map((desc, i) => (
                         <li key={i}>{desc}</li>
                       ))}
                     </ul>
-                  </div>
+                  </motion.div>
                 )}
-              </div>
-            </div>
+              </AnimatePresence>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 };
 
-// Projects Component
-const Projects = () => {
-  const { db, isAuthReady, userId } = useContext(FirebaseContext);
-  const [projects, setProjects] = useState([]);
-  const [certificates, setCertificates] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('projects'); // 'projects' or 'certificates'
 
-  // State for LLM feature
-  const [showIdeaGenerator, setShowIdeaGenerator] = useState(false);
-  const [ideaPromptInput, setIdeaPromptInput] = useState('');
-  const [generatedIdeas, setGeneratedIdeas] = useState('');
-  const [isGeneratingIdeas, setIsGeneratingIdeas] = useState(false);
-  const [ideaError, setIdeaError] = useState('');
+const Projects = () => {
+  const [activeTab, setActiveTab] = useState('projects');
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedCert, setSelectedCert] = useState(null);
+  const modalRef = useRef(null);
+
+  const projects = portfolioData.projects;
+  const certificates = portfolioData.certificates;
+
+  const allCategories = ['All', ...new Set(projects.map(p => p.category))];
+  const filteredProjects = activeCategory === 'All' ? projects : projects.filter(p => p.category === activeCategory);
 
   useEffect(() => {
-    if (!db || !isAuthReady) {
-      console.log("Firestore not ready or auth not complete.");
-      return;
+    if (selectedProject && modalRef.current) {
+      modalRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-
-    // Fetch Projects
-    const projectsCollectionRef = collection(db, `artifacts/${__app_id}/public/data/projects`);
-    const unsubscribeProjects = onSnapshot(projectsCollectionRef, (snapshot) => {
-      const projectsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setProjects(projectsData);
-      setLoading(false);
-    }, (err) => {
-      console.error("Error fetching projects:", err);
-      setError("Gagal memuat proyek.");
-      setLoading(false);
-    });
-
-    // Fetch Certificates
-    const certificatesCollectionRef = collection(db, `artifacts/${__app_id}/public/data/certificates`);
-    const unsubscribeCertificates = onSnapshot(certificatesCollectionRef, (snapshot) => {
-      const certificatesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setCertificates(certificatesData);
-    }, (err) => {
-      console.error("Error fetching certificates:", err);
-      setError("Gagal memuat sertifikat.");
-    });
-
-    return () => {
-      unsubscribeProjects();
-      unsubscribeCertificates();
-    };
-  }, [db, isAuthReady, userId]);
-
-  // Function to call Gemini API for project ideas
-  const generateProjectIdeas = async () => {
-    setIsGeneratingIdeas(true);
-    setIdeaError('');
-    setGeneratedIdeas('');
-
-    const userSkills = portfolioData.skills.technical.map(skill => skill.name).join(', ');
-    const prompt = `Sebagai seorang pengembang yang memiliki keahlian dalam ${userSkills}, berikan 3 ide proyek inovatif di bidang Data Analysis, UI/UX Design, dan Front-End Development. Jelaskan secara singkat setiap ide proyek, termasuk tujuan utama dan teknologi yang mungkin digunakan. ${ideaPromptInput ? `Fokus pada: ${ideaPromptInput}.` : ''} Format respons dalam poin-poin yang mudah dibaca.`;
-
-    let chatHistory = [];
-    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-
-    const payload = { contents: chatHistory };
-    const apiKey = ""; // Canvas will provide this at runtime
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const result = await response.json();
-
-      if (result.candidates && result.candidates.length > 0 &&
-          result.candidates[0].content && result.candidates[0].content.parts &&
-          result.candidates[0].content.parts.length > 0) {
-        const text = result.candidates[0].content.parts[0].text;
-        setGeneratedIdeas(text);
-      } else {
-        setIdeaError("Gagal menghasilkan ide proyek. Struktur respons tidak terduga.");
-        console.error("Unexpected API response structure:", result);
-      }
-    } catch (err) {
-      setIdeaError("Terjadi kesalahan saat menghubungi Gemini API. Silakan coba lagi.");
-      console.error("Error calling Gemini API:", err);
-    } finally {
-      setIsGeneratingIdeas(false);
-    }
-  };
-
-  if (loading) return <section className="py-20 text-center text-text-light dark:text-text-dark">Memuat proyek dan sertifikat...</section>;
-  if (error) return <section className="py-20 text-center text-red-500">{error}</section>;
+  }, [selectedProject]);
 
   return (
-    <section id="projects" className="py-20 px-4 md:px-10 bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark">
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-primary-dark dark:text-text-dark" data-aos="fade-up">Portofolio Saya</h2> {/* Updated title */}
+    <section
+      id="projects"
+      className="relative py-20 px-6 sm:px-8 md:px-12 bg-gradient-to-b from-primary-light via-blue-50 to-secondary-light dark:from-primary-dark dark:via-gray-800 dark:to-black text-text-light dark:text-text-dark"
+    >
+      {/* Blob Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-72 h-72 rounded-full blur-3xl opacity-30 bg-pink-300 dark:bg-pink-800 top-[-5rem] left-[-5rem] animate-blob1 mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute w-72 h-72 rounded-full blur-3xl opacity-30 bg-blue-300 dark:bg-blue-800 bottom-[-4rem] right-[-4rem] animate-blob2 mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute w-72 h-72 rounded-full blur-3xl opacity-30 bg-purple-300 dark:bg-purple-800 top-[40%] left-[45%] animate-blob3 mix-blend-multiply dark:mix-blend-lighten" />
+      </div>
 
-        {/* Tab Navigation and LLM Feature Button */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-10" data-aos="fade-up" data-aos-delay="200">
-          <div className="flex">
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Heading */}
+        <motion.h2
+          className="text-4xl md:text-5xl font-bold mb-10 text-center text-primary-dark dark:text-text-dark"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: false }}
+        >
+          Portofolio Saya
+        </motion.h2>
+
+        {/* Tabs */}
+        <motion.div
+          className="flex justify-center mb-6"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          viewport={{ once: false }}
+        >
+          {['projects', 'certificates'].map(tab => (
             <button
-              onClick={() => setActiveTab('projects')}
-              className={`px-6 py-3 text-lg font-semibold rounded-l-lg transition-colors duration-300 ${
-                activeTab === 'projects'
-                  ? 'bg-accent-light dark:bg-accent-light text-primary-dark dark:text-primary-dark'
-                  : 'bg-card-light dark:bg-card-dark text-primary-dark dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-6 py-2.5 text-sm md:text-base font-semibold transition-all duration-300 ${
+                activeTab === tab
+                  ? 'bg-accent-light text-white dark:text-white'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              } ${tab === 'projects' ? 'rounded-l-lg' : 'rounded-r-lg'}`}
             >
-              Proyek
+              {tab === 'projects' ? 'Proyek' : 'Sertifikat'}
             </button>
-            <button
-              onClick={() => setActiveTab('certificates')}
-              className={`px-6 py-3 text-lg font-semibold rounded-r-lg transition-colors duration-300 ${
-                activeTab === 'certificates'
-                  ? 'bg-accent-light dark:bg-accent-light text-primary-dark dark:text-primary-dark'
-                  : 'bg-card-light dark:bg-card-dark text-primary-dark dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              Sertifikat
-            </button>
-          </div>
-          {/* LLM Feature Button */}
-          <button
-            onClick={() => setShowIdeaGenerator(!showIdeaGenerator)}
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg text-lg font-semibold hover:bg-blue-600 transition-colors duration-300 shadow-md flex items-center justify-center"
+          ))}
+        </motion.div>
+
+        {/* Filter */}
+        {activeTab === 'projects' && (
+          <motion.div
+            className="flex flex-wrap justify-center gap-3 mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            viewport={{ once: false }}
           >
-            <Lightbulb size={20} className="mr-2" /> {showIdeaGenerator ? 'Sembunyikan' : 'Hasilkan Ide Proyek ✨'}
-          </button>
-        </div>
-
-        {/* Project Idea Generator Section */}
-        {showIdeaGenerator && (
-          <div className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg p-8 max-w-3xl mx-auto mb-16" data-aos="fade-up" data-aos-delay="300">
-            <h3 className="text-2xl md:text-3xl font-bold mb-6 text-primary-dark dark:text-text-dark">Hasilkan Ide Proyek ✨</h3>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="ideaPromptInput" className="block text-left text-lg font-medium mb-2 text-primary-dark dark:text-text-dark">Fokus Tambahan (Opsional):</label>
-                <textarea
-                  id="ideaPromptInput"
-                  rows="3"
-                  value={ideaPromptInput}
-                  onChange={(e) => setIdeaPromptInput(e.target.value)}
-                  className="w-full p-3 rounded-lg bg-primary-light dark:bg-primary-dark border border-gray-300 dark:border-gray-700 text-primary-dark dark:text-text-dark focus:ring-2 focus:ring-accent-light focus:border-transparent"
-                  placeholder="Contoh: 'menggunakan teknologi AI terbaru', 'untuk masalah lingkungan'"
-                ></textarea>
-              </div>
+            {allCategories.map(cat => (
               <button
-                onClick={generateProjectIdeas}
-                disabled={isGeneratingIdeas}
-                className="w-full px-6 py-3 bg-accent-light dark:bg-accent-light text-primary-dark dark:text-primary-dark rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-colors duration-300 shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                  activeCategory === cat
+                    ? 'bg-accent-light text-white'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
               >
-                {isGeneratingIdeas ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Menghasilkan...
-                  </>
-                ) : (
-                  'Hasilkan Ide'
-                )}
+                {cat}
               </button>
-              {ideaError && <p className="mt-4 text-center text-red-500">{ideaError}</p>}
-              {generatedIdeas && (
-                <div className="mt-6 p-4 bg-primary-light dark:bg-primary-dark rounded-lg text-left text-primary-dark dark:text-text-dark whitespace-pre-wrap shadow-inner">
-                  <h4 className="font-semibold mb-2">Ide Proyek Anda:</h4>
-                  {generatedIdeas}
+            ))}
+          </motion.div>
+        )}
+
+        {/* Grid: Projects */}
+        {activeTab === 'projects' && (
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            viewport={{ once: false }}
+          >
+            <AnimatePresence>
+              {filteredProjects.map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg overflow-hidden cursor-pointer"
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  onClick={() => setSelectedProject(project)}
+                >
+                  <img
+                    src={project.img || `https://placehold.co/600x400?text=${project.title}`}
+                    alt={project.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-6 text-left">
+                    <h4 className="text-lg font-semibold text-accent-light dark:text-accent-light mb-2">{project.title}</h4>
+                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-3">{project.description}</p>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {project.techStack?.map((tech, i) => (
+                        <span key={i} className="bg-primary-light dark:bg-primary-dark text-accent-light text-xs font-semibold px-2 py-0.5 rounded-full">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
+
+        {/* Grid: Certificates */}
+        {activeTab === 'certificates' && (
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            viewport={{ once: false }}
+          >
+            {certificates.map((cert, index) => (
+              <motion.div
+                key={cert.id}
+                className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg overflow-hidden cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+                onClick={() => setSelectedCert(cert)}
+              >
+                <img
+                  src={cert.img || `https://placehold.co/400x300?text=Certificate+${index + 1}`}
+                  alt={cert.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4 text-left">
+                  <p className="text-base font-medium text-primary-dark dark:text-text-dark">{cert.title}</p>
                 </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+
+        {/* Modal: Project */}
+        {selectedProject && (
+          <div ref={modalRef} className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
+            <div className="bg-white dark:bg-card-dark rounded-lg max-w-3xl w-full p-6 relative animate-fadeIn">
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-red-600 dark:hover:text-red-400"
+              >
+                <X size={24} />
+              </button>
+              <img src={selectedProject.img} alt={selectedProject.title} className="w-full h-auto object-contain rounded-md mb-4" />
+              <h3 className="text-xl font-bold text-primary-dark dark:text-text-dark mb-2">{selectedProject.title}</h3>
+              <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-4">{selectedProject.description}</p>
+              {selectedProject.link && (
+                <a
+                  href={selectedProject.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline text-sm mr-4"
+                >
+                  <LinkIcon className="inline mr-1" size={16} /> Demo
+                </a>
+              )}
+              {selectedProject.github && (
+                <a
+                  href={selectedProject.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline text-sm"
+                >
+                  <Github className="inline mr-1" size={16} /> GitHub
+                </a>
               )}
             </div>
           </div>
         )}
 
-        {/* Content based on active tab */}
-        {activeTab === 'projects' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.length > 0 ? (
-              projects.map((project, index) => (
-                <div
-                  key={project.id}
-                  className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
-                  data-aos="fade-up"
-                  data-aos-delay={index * 150}
+        {/* Modal: Certificate */}
+        {selectedCert && (
+          <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
+            <div className="bg-white dark:bg-card-dark rounded-lg max-w-2xl w-full p-6 relative animate-fadeIn">
+              <button
+                onClick={() => setSelectedCert(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-red-600 dark:hover:text-red-400"
+              >
+                <X size={24} />
+              </button>
+              <img src={selectedCert.img} alt={selectedCert.title} className="w-full h-auto object-contain rounded-md mb-4" />
+              <h3 className="text-xl font-bold text-primary-dark dark:text-text-dark mb-2">{selectedCert.title}</h3>
+              {selectedCert.link && (
+                <a
+                  href={selectedCert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline text-sm"
                 >
-                  <img
-                    src={project.Img || `https://placehold.co/600x400/00abf0/ffffff?text=Project+${index + 1}`}
-                    alt={`Gambar Proyek ${project.Title}`}
-                    className="w-full h-48 object-cover"
-                    onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/600x400/00abf0/ffffff?text=Project+${index + 1}` }}
-                  />
-                  <div className="p-6">
-                    <h4 className="text-xl md:text-2xl font-semibold text-accent-light dark:text-accent-light mb-2">{project.Title}</h4>
-                    <p className="text-base text-text-secondary-light dark:text-text-secondary-dark mb-4 line-clamp-3">{project.Description}</p>
-                    {project.TechStack && project.TechStack.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.TechStack.map((tech, i) => (
-                          <span key={i} className="bg-primary-light dark:bg-primary-dark text-accent-light dark:text-accent-light text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    <div className="flex justify-center gap-4 mt-4">
-                      {project.Link && (
-                        <a
-                          href={project.Link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-primary-dark dark:text-text-dark hover:text-accent-light dark:hover:text-accent-light transition-colors duration-300"
-                          aria-label={`Link ke ${project.Title}`}
-                        >
-                          <LinkIcon size={20} className="mr-1" /> Demo
-                        </a>
-                      )}
-                      {project.Github && (
-                        <a
-                          href={project.Github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-primary-dark dark:text-text-dark hover:text-accent-light dark:hover:text-accent-light transition-colors duration-300"
-                          aria-label={`GitHub untuk ${project.Title}`}
-                        >
-                          <Github size={20} className="mr-1" /> GitHub
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="col-span-full text-center text-text-secondary-light dark:text-text-secondary-dark">Belum ada proyek yang ditambahkan. Anda bisa menambahkan proyek melalui Firestore.</p>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'certificates' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {certificates.length > 0 ? (
-              certificates.map((cert, index) => (
-                <div
-                  key={cert.id}
-                  className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
-                  data-aos="fade-up"
-                  data-aos-delay={index * 100}
-                >
-                  <img
-                    src={cert.Img || `https://placehold.co/400x300/00abf0/ffffff?text=Certificate+${index + 1}`}
-                    alt={`Gambar Sertifikat ${index + 1}`}
-                    className="w-full h-48 object-cover"
-                    onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/400x300/00abf0/ffffff?text=Certificate+${index + 1}` }}
-                  />
-                  <div className="p-4">
-                    <p className="text-base font-medium text-primary-dark dark:text-text-dark">Sertifikat {index + 1}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="col-span-full text-center text-text-secondary-light dark:text-text-secondary-dark">Belum ada sertifikat yang ditambahkan. Anda bisa menambahkan sertifikat melalui Firestore.</p>
-            )}
+                  Lihat Sertifikat
+                </a>
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -688,165 +760,163 @@ const Projects = () => {
 
 // Contact Component
 const Contact = () => {
-  const { db, isAuthReady, userId } = useContext(FirebaseContext);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [formMessage, setFormMessage] = useState('');
-  const [comments, setComments] = useState([]);
-  const [newCommentContent, setNewCommentContent] = useState('');
-  const [newCommentName, setNewCommentName] = useState('');
-  const [commentError, setCommentError] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [formMessage, setFormMessage] = useState("");
 
-  // Fetch comments
-  useEffect(() => {
-    if (!db || !isAuthReady) {
-      console.log("Firestore not ready or auth not complete for comments.");
-      return;
-    }
-
-    const commentsCollectionRef = collection(db, `artifacts/${__app_id}/public/data/portfolio_comments`);
-    const unsubscribe = onSnapshot(commentsCollectionRef, (snapshot) => {
-      const commentsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      // Sort comments by created_at in descending order
-      commentsData.sort((a, b) => {
-        // Ensure created_at is a valid timestamp or Date object
-        const dateA = a.created_at?.toDate ? a.created_at.toDate() : new Date(0);
-        const dateB = b.created_at?.toDate ? b.created_at.toDate() : new Date(0);
-        return dateB - dateA;
-      });
-      setComments(commentsData);
-    }, (err) => {
-      console.error("Error fetching comments:", err);
-      setCommentError("Gagal memuat komentar.");
-    });
-
-    return () => unsubscribe();
-  }, [db, isAuthReady, userId]);
-
-  const handleSubmitMessage = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !email || !message) {
-      setFormMessage("Semua kolom wajib diisi!");
+      setFormMessage("Harap isi semua kolom terlebih dahulu.");
       return;
     }
-
-    const whatsappMessage = `Halo!%0ANama: ${name}%0AEmail: ${email}%0APesan: ${message}`;
-    const whatsappLink = `https://wa.me/6287738230466?text=${whatsappMessage}`; // Replace with your WhatsApp number
-
-    window.open(whatsappLink, '_blank');
-    setFormMessage("Terima kasih atas pesan Anda! Kami akan segera menghubungi Anda.");
-    setName('');
-    setEmail('');
-    setMessage('');
+    setFormMessage("Pesan kamu berhasil dikirim! 😊");
+    setName("");
+    setEmail("");
+    setMessage("");
   };
 
-  const handleAddComment = async () => {
-    if (!newCommentContent || !newCommentName) {
-      setCommentError("Nama dan komentar tidak boleh kosong.");
-      return;
-    }
-    if (!db || !isAuthReady) {
-      setCommentError("Database belum siap. Coba lagi nanti.");
-      return;
-    }
-
-    try {
-      await addDoc(collection(db, `artifacts/${__app_id}/public/data/portfolio_comments`), {
-        content: newCommentContent,
-        user_name: newCommentName,
-        profile_image: `https://placehold.co/40x40/cccccc/000000?text=${newCommentName.charAt(0).toUpperCase()}`, // Placeholder for profile image
-        is_pinned: false, // Default to false as per policy
-        created_at: new Date(),
-      });
-      setNewCommentContent('');
-      setNewCommentName('');
-      setCommentError('');
-    } catch (error) {
-      console.error("Error adding comment:", error);
-      setCommentError("Gagal menambahkan komentar. Silakan coba lagi.");
-    }
-  };
+  const socialLinks = [
+    {
+      name: "LinkedIn",
+      icon: <Linkedin size={20} />,
+      href: "https://www.linkedin.com/in/arshandagn",
+    },
+    {
+      name: "GitHub",
+      icon: <Github size={20} />,
+      href: "https://github.com/ArshandaGN",
+    },
+    {
+      name: "Instagram",
+      icon: <Instagram size={20} />,
+      href: "https://www.instagram.com/arshndaagn",
+    },
+    {
+      name: "TikTok",
+      icon: <i className="bx bxl-tiktok text-[18px]"></i>,
+      href: "https://www.tiktok.com/@arshndagn",
+    },
+  ];
 
   return (
-    <section id="contact" className="py-20 px-4 md:px-10 bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark"> {/* Changed background */}
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-primary-dark dark:text-text-dark" data-aos="fade-up">Hubungi Saya</h2>
+     <section id="contact" className="relative py-24 px-6 md:px-10 bg-gradient-to-b from-secondary-light via-[#f8fbff] to-secondary-light dark:from-black dark:via-[#0f172a] dark:to-secondary-dark text-text-light dark:text-text-dark transition-all"
+      ><div className="max-w-6xl mx-auto">
+        <motion.h2
+          className="text-4xl md:text-5xl font-bold text-center mb-4 text-primary-dark dark:text-text-dark"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          Yuk Terhubung!
+        </motion.h2>
 
-        {/* Contact Form Card */}
-        <div className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg p-8 max-w-2xl mx-auto mb-16" data-aos="fade-up" data-aos-delay="200"> {/* Adjusted delay */}
-          <h3 className="text-2xl md:text-3xl font-bold mb-6 text-primary-dark dark:text-text-dark">Kirim Pesan</h3>
-          <form onSubmit={handleSubmitMessage} className="space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-left text-lg font-medium mb-2 text-primary-dark dark:text-text-dark">Nama</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full p-3 rounded-lg bg-primary-light dark:bg-primary-dark border border-gray-300 dark:border-gray-700 text-primary-dark dark:text-text-dark focus:ring-2 focus:ring-accent-light focus:border-transparent"
-                placeholder="Masukkan nama Anda"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-left text-lg font-medium mb-2 text-primary-dark dark:text-text-dark">Email</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-3 rounded-lg bg-primary-light dark:bg-primary-dark border border-gray-300 dark:border-gray-700 text-primary-dark dark:text-text-dark focus:ring-2 focus:ring-accent-light focus:border-transparent"
-                placeholder="Masukkan email Anda"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-left text-lg font-medium mb-2 text-primary-dark dark:text-text-dark">Pesan</label>
-              <textarea
-                id="message"
-                rows="5"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="w-full p-3 rounded-lg bg-primary-light dark:bg-primary-dark border border-gray-300 dark:border-gray-700 text-primary-dark dark:text-text-dark focus:ring-2 focus:ring-accent-light focus:border-transparent"
-                placeholder="Tulis pesan Anda di sini"
-                required
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              className="w-full px-6 py-3 bg-accent-light dark:bg-accent-light text-primary-dark dark:text-primary-dark rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-colors duration-300 shadow-md"
-            >
-              Kirim Pesan
-            </button>
-            {formMessage && <p className="mt-4 text-center text-green-500 dark:text-green-400">{formMessage}</p>}
-          </form>
+        <motion.p
+          className="text-lg text-center text-text-secondary-light dark:text-text-secondary-dark mb-12 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          Ingin berkolaborasi, diskusi project, atau punya pertanyaan seputar teknologi?
+          Jangan ragu hubungi saya! Kamu bisa kirim pesan lewat form ini atau langsung connect lewat sosial media.
+        </motion.p>
+
+        <div className="flex flex-col lg:flex-row gap-10">
+          {/* SOCIAL MEDIA */}
+          <motion.div
+            className="w-full lg:w-1/2 bg-card-light dark:bg-card-dark border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl p-8"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="text-xl font-bold text-left mb-6 text-primary-dark dark:text-text-dark">
+              Temui Saya di Sosial Media ✨
+            </h3>
+
+            <ul className="space-y-4">
+              {socialLinks.map((link, i) => (
+                <li key={i}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-4 bg-gray-50 dark:bg-primary-dark rounded-lg hover:shadow-md transition-all group"
+                  >
+                    <div className="flex items-center gap-3 text-primary-dark dark:text-white group-hover:text-accent-light dark:group-hover:text-accent-light">
+                      {link.icon}
+                      <span className="text-base font-semibold">{link.name}</span>
+                    </div>
+                    <ChevronRight className="text-gray-400 group-hover:text-accent-light" size={18} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* FORM */}
+          <motion.div
+            className="w-full lg:w-1/2 bg-card-light dark:bg-card-dark rounded-2xl shadow-xl p-8"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="text-xl font-bold mb-6 text-primary-dark dark:text-text-dark">
+              Kirim Pesan Langsung 📬
+            </h3>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium mb-1">Nama</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full p-3 rounded-lg bg-primary-light dark:bg-primary-dark border border-gray-300 dark:border-gray-700 text-primary-dark dark:text-text-dark"
+                  placeholder="Nama kamu"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full p-3 rounded-lg bg-primary-light dark:bg-primary-dark border border-gray-300 dark:border-gray-700 text-primary-dark dark:text-text-dark"
+                  placeholder="Email kamu"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Pesan</label>
+                <textarea
+                  rows={5}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full p-3 rounded-lg bg-primary-light dark:bg-primary-dark border border-gray-300 dark:border-gray-700 text-primary-dark dark:text-text-dark"
+                  placeholder="Apa yang ingin kamu diskusikan?"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 bg-accent-light text-white dark:text-primary-dark rounded-lg font-semibold hover:bg-opacity-90 transition-all shadow-md"
+              >
+                Kirim Sekarang
+              </button>
+              {formMessage && (
+                <p className="mt-4 text-center text-green-600 dark:text-green-400">
+                  {formMessage}
+                </p>
+              )}
+            </form>
+          </motion.div>
         </div>
-
-        {/* Social Media Card */}
-        <div className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg p-8 max-w-2xl mx-auto mb-16" data-aos="fade-up" data-aos-delay="400">
-          <h3 className="text-2xl md:text-3xl font-bold mb-6 text-primary-dark dark:text-text-dark">Media Sosial</h3>
-          <div className="flex justify-center space-x-6">
-            <a href="https://github.com/ArshandaGN" target="_blank" rel="noopener noreferrer" className="text-accent-light dark:text-accent-light hover:text-primary-dark dark:hover:text-primary-dark bg-primary-light dark:bg-primary-dark p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-md" aria-label="GitHub">
-              <Github size={24} />
-            </a>
-            <a href="https://www.instagram.com/arshndasvnch" target="_blank" rel="noopener noreferrer" className="text-accent-light dark:text-accent-light hover:text-primary-dark dark:hover:text-primary-dark bg-primary-light dark:bg-primary-dark p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-md" aria-label="Instagram">
-              <Instagram size={24} />
-            </a>
-            <a href="https://www.linkedin.com/in/arshandagn" target="_blank" rel="noopener noreferrer" className="text-accent-light dark:text-accent-light hover:text-primary-dark dark:hover:text-primary-dark bg-primary-light dark:bg-primary-dark p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-md" aria-label="LinkedIn">
-              <Linkedin size={24} />
-            </a>
-            {/* Add TikTok if you have one */}
-            <a href="https://www.tiktok.com/@yourtiktok" target="_blank" rel="noopener noreferrer" className="text-accent-light dark:text-accent-light hover:text-primary-dark dark:hover:text-primary-dark bg-primary-light dark:bg-primary-dark p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-md" aria-label="TikTok">
-              <i className='bx bxl-tiktok text-2xl'></i>
-            </a>
-          </div>
-        </div>
-
       </div>
     </section>
   );
 };
+
 
 // Footer Component
 const Footer = () => {
@@ -935,7 +1005,6 @@ const App = () => {
 
   return (
     <ThemeProvider>
-      <FirebaseProvider>
         {/* CSS global yang di-inline untuk memastikan resolusi */}
         <style>
           {`
@@ -1011,7 +1080,6 @@ const App = () => {
           </main>
           <Footer />
         </div>
-      </FirebaseProvider>
     </ThemeProvider>
   );
 };

@@ -27,30 +27,52 @@ export const portfolioData = {
     cvLink: "https://drive.google.com/file/d/1yJCpgLt199NoA-qVnx4up9e0DvY08opo/view?usp=sharing", // REPLACE WITH YOUR ACTUAL GOOGLE DRIVE CV LINK
   },
   // Education section removed as per user request
-  skills: {
-    technical: [
-    { name: "Python", icon: Python }, // sementara belum ada icon Flutter, pakai icon placeholder
-    { name: "C++", icon: C },
-    { name: "JavaScript", icon: JavaScript },
-    { name: "Java", icon: Java },
-    { name: "CSS", icon: CSS },
-    { name: "HTML", icon: html },
-    { name: "Github", icon: Github },
-    { name: "Spreadsheets", icon: Spreadsheets },
-    { name: "AppSheet", icon: AppSheet },
-    { name: "Looker Studio", icon: LookerStudio },
-    { name: "Canva", icon: Canva },
-    { name: "Figma", icon: Figma }, // Figma belum diimport, jadi kita pakai Canva sebagai placeholder
-    { name: "Capcut", icon: Capcut },
-    ],
-    interpersonal: [
-      "Kemampuan Problem Solving dan Berpikir Analitis",
-      "Komunikasi, Ketelitian, dan Kerapihan",
-      "Bekerja dengan tim maupun individu",
-      "Bahasa Indonesia (Lanjutan)",
-      "Bahasa Inggris (Dasar)"
+   skills: {
+    technical: {
+      dataTools: [
+        { name: "Python", icon: Python, url: "https://www.python.org/" },
+        { name: "Spreadsheets", icon: Spreadsheets, url: "https://www.google.com/sheets/about/" },
+        { name: "AppSheet", icon: AppSheet, url: "https://www.appsheet.com/" },
+        { name: "Looker Studio", icon: LookerStudio, url: "https://lookerstudio.google.com/" },
+      ],
+      designTools: [
+        { name: "Figma", icon: Figma, url: "https://www.figma.com/" },
+        { name: "Canva", icon: Canva, url: "https://www.canva.com/" },
+        { name: "Capcut", icon: Capcut, url: "https://www.capcut.com/" },
+      ],
+      programming: [
+        { name: "HTML", icon: html, url: "https://developer.mozilla.org/en-US/docs/Web/HTML" },
+        { name: "CSS", icon: CSS, url: "https://developer.mozilla.org/en-US/docs/Web/CSS" },
+        { name: "JavaScript", icon: JavaScript, url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
+        { name: "C++", icon: C, url: "https://isocpp.org/" },
+        { name: "Java", icon: Java, url: "https://www.java.com/" },
+        { name: "Github", icon: Github, url: "https://github.com/" },
+      ],
+    },
+  interpersonal: [
+      {
+        title: "Problem Solving",
+        desc: "Mampu menganalisis dan menyelesaikan permasalahan dengan pendekatan logis dan efisien.",
+      },
+      {
+        title: "Komunikatif",
+        desc: "Terbiasa menyampaikan ide dan bekerja sama dalam tim lintas disiplin.",
+      },
+      {
+        title: "Teliti & Rapi",
+        desc: "Selalu menjaga kualitas dan kerapihan dalam setiap pekerjaan yang dilakukan.",
+      },
+      {
+        title: "Bahasa",
+        desc: "Menguasai Bahasa Indonesia (lanjutan) dan Bahasa Inggris (dasar).",
+      },
+      {
+        title: "Adaptif",
+        desc: "Cepat belajar dan beradaptasi dengan tools dan teknologi baru.",
+      },
     ]
   },
+
   experiences: [ // Combined and structured for easier rendering
     {
       type: "Organisasi",
@@ -112,5 +134,74 @@ export const portfolioData = {
     const yearA = parseInt(a.years.split('–')[0].trim().split(' ')[a.years.split('–')[0].trim().split(' ').length - 1]);
     const yearB = parseInt(b.years.split('–')[0].trim().split(' ')[b.years.split('–')[0].trim().split(' ').length - 1]);
     return yearB - yearA;
-  })
+  }),
+
+ projects: [
+  {
+    id: 1,
+    title: "Klasifikasi Gambar Sampah Menggunakan CNN",
+    description:
+      "Sebuah proyek analisis data berbasis Computer Vision untuk mengklasifikasikan jenis sampah menggunakan dataset TrashNet. Proyek ini membandingkan performa tiga arsitektur CNN yaitu VGG19, ResNet50, dan EfficientNetB0. Pengujian dilakukan dalam lingkungan Jupyter Notebook menggunakan TensorFlow dan Keras. Proyek ini juga dilengkapi dengan manual book dan paper ilmiah.",
+    techStack: ["Python", "Jupyter", "TensorFlow", "CNN", "TrashNet"],
+    github: "https://github.com/ArshandaGN/cnn-comparison-trashnet-UAS-ML.git",
+    link: "", // Tidak ada link demo
+    category: "Machine Learning",
+    img: "/src/assets/project1.png", // ganti nanti dengan gambar aktual
+  },
+  {
+    id: 2,
+    title: "Desain UI/UX Aplikasi Mobile",
+    description:
+      "Kumpulan desain antarmuka aplikasi mobile menggunakan Figma, termasuk wireframe, user flow, dan prototipe interaktif. Desain mencakup halaman utama, fitur login, navigasi, dan halaman produk. Desain ini dibuat berdasarkan prinsip-prinsip UX seperti kemudahan penggunaan, konsistensi, dan visual hierarchy.",
+    techStack: ["Figma", "UI/UX", "Prototyping"],
+    github: "", // jika ada figma file public, bisa disisipkan
+    link: "", // jika nanti punya link demo atau figma public
+    category: "UI/UX",
+    img: "/src/assets/project-uiux.png", // placeholder
+  },
+  {
+    id: 3,
+    title: "Dashboard Keuangan Himpunan Mahasiswa",
+    description:
+      "Dashboard interaktif berbasis Google Looker Studio untuk memvisualisasikan data keuangan Himpunan Mahasiswa Ilmu Komputer. Menampilkan laporan kas masuk, kas keluar, dan saldo real-time berdasarkan input spreadsheet. Digunakan sebagai alat bantu transparansi pengelolaan dana organisasi.",
+    techStack: ["Looker Studio", "Google Spreadsheet", "Data Visualization"],
+    github: "", // bukan project kode
+    link: "https://lookerstudio.google.com/reporting/6b277e53-e918-4af2-b8d3-f956a5b1d2f5",
+    category: "Data Visualization",
+    img: "/src/assets/project-looker.png", // placeholder image dashboard
+  },
+  {
+    id: 4,
+    title: "Video Editing: Tugas Kelas CapCut",
+    description:
+      "Sebuah video yang diedit menggunakan CapCut untuk tugas kelas. Proses editing mencakup pemotongan video, penambahan transisi, audio latar, dan subtitle untuk meningkatkan pengalaman menonton. Proyek ini menunjukkan kemampuan dasar dalam pengeditan video menggunakan tools intuitif.",
+    techStack: ["CapCut", "Video Editing"],
+    github: "",
+    link: "https://www.youtube.com/watch?v=tfikt73qMdQ", // YouTube video
+    category: "Multimedia",
+    img: "/src/assets/project-video.png", // placeholder thumbnail
+  },
+  {
+    id: 5,
+    title: "Machero - Website Toko Roti",
+    description:
+      "Website statis sederhana untuk toko roti 'Machero', dibangun menggunakan HTML dan CSS. Menampilkan halaman beranda, galeri produk, dan informasi kontak. Dirancang dengan struktur layout yang rapi dan responsif sebagai latihan dasar pengembangan web.",
+    techStack: ["HTML", "CSS"],
+    github: "https://github.com/ArshandaGN/Praktikum-Pemweb.git",
+    link: "", // jika ada demo live bisa ditambahkan
+    category: "Web Development",
+    img: "/src/assets/project-machero.png", // ganti nanti kalau ada
+  },
+],
+
+
+  certificates: [
+    {
+      id: 1,
+      title: "C++ Dasar - Skilvul",
+      img: "/src/assets/sertif-cpp.png", // nanti kamu ubah dari PDF ke PNG
+      link: "https://skilvul.com/courses/c-plus-plus-dasar/student/clwmgqpkf01px01msojb403w1/",
+    },
+  ],
+
 };
