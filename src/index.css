@@ -8,20 +8,19 @@
 /* Apply Poppins font globally and set base styles */
 body {
   font-family: 'Poppins', sans-serif;
-  @apply bg-primary-light text-text-light; /* Default light mode colors */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme change */
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  @apply bg-primary-light text-text-light;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
 /* Dark mode styles applied when 'dark' class is present on html */
 html.dark body {
-  @apply bg-primary-dark text-text-dark; /* Apply dark mode colors */
+  @apply bg-primary-dark text-text-dark;
 }
-
 /* Basic reset for elements */
 * {
   margin: 0;
-  padding: 0;
+  padding: 10px;
   box-sizing: border-box;
 }
 

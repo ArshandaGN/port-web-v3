@@ -280,21 +280,27 @@ const Home = () => {
 // About Component
 const About = () => {
   return (
-    <section id="about" className="min-h-screen flex items-center py-20 px-4 md:px-10 bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+    <section
+      id="about"
+      className="min-h-screen flex items-center py-20 px-6 sm:px-10 md:px-12 lg:px-16 bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark"
+    >
+      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-12 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-10">
+
         {/* Image for Mobile/Tablet */}
         <div className="md:hidden flex-shrink-0" data-aos="fade-down">
           <img
             src={portfolioData.profile.personalImage2}
             alt="Gambar Arshanda"
-            className="w-52 h-64 transition-transform duration-300 transform hover:scale-105 hover:rotate1 hover:shadow-xl"
+            className="w-52 h-64 transition-transform duration-300 transform hover:scale-105 hover:rotate-1 hover:shadow-xl"
           />
         </div>
 
         {/* About Content */}
-        <div className="w-full md:w-1/2 text-center md:text-left" data-aos="fade-right">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary-dark dark:text-text-dark">Tentang Saya</h2>
-          <p className="text-base md:text-lg leading-relaxed text-text-secondary-light dark:text-text-secondary-dark text-justify"> {/* Added text-justify */}
+        <div className="w-full md:w-1/2 text-justify" data-aos="fade-right">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary-dark dark:text-text-dark">
+            Tentang Saya
+          </h2>
+          <p className="text-base md:text-lg leading-relaxed tracking-normal text-text-secondary-light dark:text-text-secondary-dark text-justify">
             {portfolioData.profile.shortProfile}
           </p>
         </div>
@@ -304,7 +310,7 @@ const About = () => {
           <img
             src={portfolioData.profile.personalImage2}
             alt="Gambar Arshanda"
-            className="w-60 h-80 transition-transform duration-300 transform hover:scale-105 hover:rotate1 hover:shadow-xl"
+            className="w-60 h-80 transition-transform duration-300 transform hover:scale-105 hover:rotate-1 hover:shadow-xl"
           />
         </div>
       </div>
@@ -313,17 +319,15 @@ const About = () => {
 };
 
 // Skill Icon Mapping (Lucide React)
-const getSkillIcon = (iconName) => {
-  switch (iconName) {
-    case 'Code': return <Code size={40} />;
-    case 'BookOpen': return <BookOpen size={40} />;
-    case 'Briefcase': return <Briefcase size={40} />;
-    case 'User': return <User size={40} />;
-    case 'Star': return <Star size={40} />;
-    case 'Play': return <Play size={40} />; // For Capcut/Canva if needed
-    default: return <Code size={40} />; // Default icon
-  }
-};
+const getSkillIcon = (icon) => {
+    return (
+      <img
+        src={icon}
+        alt="Skill Icon"
+        className="w-10 h-10 object-contain"
+      />
+    );
+}
 
 // Skills Component
 const Skills = () => {
@@ -333,17 +337,21 @@ const Skills = () => {
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-primary-dark dark:text-text-dark" data-aos="fade-up">Keahlian Saya</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12">
           {portfolioData.skills.technical.map((skill, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center p-4 bg-card-light dark:bg-card-dark rounded-xl shadow-md transform hover:scale-105 transition-transform duration-300"
-              data-aos="zoom-in"
-              data-aos-delay={index * 100}
-            >
-              <div className="text-accent-light dark:text-accent-light mb-3">
-                {getSkillIcon(skill.icon)}
-              </div>
-              <p className="text-lg font-medium text-primary-dark dark:text-text-dark">{skill.name}</p>
-            </div>
+            <a
+            key={index}
+            href={skill.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center p-4 bg-card-light dark:bg-card-dark rounded-xl shadow-md transform hover:scale-105 transition-all duration-300 hover:-translate-y-1 hover:ring-2 hover:ring-accent-light dark:hover:ring-accent-light hover:bg-white/30 dark:hover:bg-white/10"
+            data-aos="zoom-in"
+            data-aos-delay={index * 100}>
+            <img
+              src={skill.icon}
+              alt={`${skill.name} icon`}
+              className="w-10 h-10 mb-3 object-contain"
+            />
+            <p className="text-lg font-medium text-primary-dark dark:text-text-dark">{skill.name}</p>
+          </a>
           ))}
         </div>
         <h3 className="text-3xl md:text-4xl font-bold mb-8 text-primary-dark dark:text-text-dark" data-aos="fade-up">Kemampuan Interpersonal</h3>
@@ -835,65 +843,6 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Comments Section Card */}
-        <div className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg p-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="600"> {/* Adjusted delay */}
-          <h3 className="text-2xl md:text-3xl font-bold mb-6 text-primary-dark dark:text-text-dark">Komentar</h3>
-          {commentError && <p className="text-red-500 mb-4">{commentError}</p>}
-          <div className="space-y-4 mb-8 max-h-96 overflow-y-auto pr-2">
-            {comments.length > 0 ? (
-              comments.map((comment) => (
-                <div key={comment.id} className="flex items-start space-x-3 bg-primary-light dark:bg-primary-dark p-4 rounded-lg shadow-sm">
-                  <img
-                    src={comment.profile_image || `https://placehold.co/40x40/cccccc/000000?text=${comment.user_name.charAt(0).toUpperCase()}`}
-                    alt={`Gambar Profil ${comment.user_name}`}
-                    className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                  />
-                  <div>
-                    <p className="font-semibold text-primary-dark dark:text-text-dark">{comment.user_name}</p>
-                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">{comment.content}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {comment.created_at ? new Date(comment.created_at.seconds * 1000).toLocaleString() : 'Tanggal tidak tersedia'}
-                    </p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-text-secondary-light dark:text-text-secondary-dark">Belum ada komentar. Jadilah yang pertama berkomentar!</p>
-            )}
-          </div>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="newCommentName" className="block text-left text-lg font-medium mb-2 text-primary-dark dark:text-text-dark">Nama Anda</label>
-              <input
-                type="text"
-                id="newCommentName"
-                value={newCommentName}
-                onChange={(e) => setNewCommentName(e.target.value)}
-                className="w-full p-3 rounded-lg bg-primary-light dark:bg-primary-dark border border-gray-300 dark:border-gray-700 text-primary-dark dark:text-text-dark focus:ring-2 focus:ring-accent-light focus:border-transparent"
-                placeholder="Nama Anda"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="newCommentContent" className="block text-left text-lg font-medium mb-2 text-primary-dark dark:text-text-dark">Komentar Anda</label>
-              <textarea
-                id="newCommentContent"
-                rows="3"
-                value={newCommentContent}
-                onChange={(e) => setNewCommentContent(e.target.value)}
-                className="w-full p-3 rounded-lg bg-primary-light dark:bg-primary-dark border border-gray-300 dark:border-gray-700 text-primary-dark dark:text-text-dark focus:ring-2 focus:ring-accent-light focus:border-transparent"
-                placeholder="Tulis komentar Anda di sini"
-                required
-              ></textarea>
-            </div>
-            <button
-              onClick={handleAddComment}
-              className="w-full px-6 py-3 bg-accent-light dark:bg-accent-light text-primary-dark dark:text-primary-dark rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-colors duration-300 shadow-md"
-            >
-              Tambahkan Komentar
-            </button>
-          </div>
-        </div>
       </div>
     </section>
   );

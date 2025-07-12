@@ -1,5 +1,18 @@
 import ikon1 from '../assets/ikon1.png';
 import arshan1 from '../assets/arshan1.png';
+import C from '../assets/c.png';
+import Canva from '../assets/canva.png';
+import Capcut from '../assets/capcut.png';
+import CSS from '../assets/css-3.png';
+import Github from '../assets/github.png';
+import html from '../assets/html.png';
+import Java from '../assets/java.png';
+import LookerStudio from '../assets/LookerStudio.png';
+import Python from '../assets/python.png';
+import Spreadsheets from '../assets/Spreadsheets.png';
+import AppSheet from '../assets/AppSheets.png';
+import JavaScript from '../assets/JavaScript.png';
+import Figma from '../assets/figma.png';
 
 // --- Data for Portfolio (Static) ---
 
@@ -16,19 +29,19 @@ export const portfolioData = {
   // Education section removed as per user request
   skills: {
     technical: [
-      { name: "Python", icon: "Code" },
-      { name: "Flutter", icon: "Code" },
-      { name: "Figma", icon: "Code" },
-      { name: "Laravel", icon: "Code" },
-      { name: "C++", icon: "Code" },
-      { name: "Java", icon: "Code" },
-      { name: "CSS", icon: "Code" },
-      { name: "HTML", icon: "Code" },
-      { name: "Spreadsheets", icon: "Code" },
-      { name: "AppSheet", icon: "Code" },
-      { name: "Looker Studio", icon: "Code" },
-      { name: "Canva", icon: "Code" },
-      { name: "Capcut", icon: "Code" },
+    { name: "Python", icon: Python }, // sementara belum ada icon Flutter, pakai icon placeholder
+    { name: "C++", icon: C },
+    { name: "JavaScript", icon: JavaScript },
+    { name: "Java", icon: Java },
+    { name: "CSS", icon: CSS },
+    { name: "HTML", icon: html },
+    { name: "Github", icon: Github },
+    { name: "Spreadsheets", icon: Spreadsheets },
+    { name: "AppSheet", icon: AppSheet },
+    { name: "Looker Studio", icon: LookerStudio },
+    { name: "Canva", icon: Canva },
+    { name: "Figma", icon: Figma }, // Figma belum diimport, jadi kita pakai Canva sebagai placeholder
+    { name: "Capcut", icon: Capcut },
     ],
     interpersonal: [
       "Kemampuan Problem Solving dan Berpikir Analitis",
