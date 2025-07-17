@@ -933,9 +933,7 @@ const App = () => {
     const [isVerified, setIsVerified] = useState(false);
 
     const handleCaptchaChange = (value) => {
-      if (value) {
-        setIsVerified(true);
-      }
+      if (value) setIsVerified(true);
     };
   
     // Memindahkan inisialisasi AOS ke dalam komponen App
@@ -1076,15 +1074,15 @@ const App = () => {
             }
           `}
         </style>
-        <div className="font-poppins antialiased min-h-screen">
-        {!isVerified ? (
-          <div className="flex flex-col items-center justify-center h-screen bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark">
-            <h2 className="text-xl font-semibold mb-6">Verifikasi dulu ya sebelum masuk 👇</h2>
-            <ReCAPTCHA
-              sitekey="6Ld_roYrAAAAAEajwmObnx-ZkMfGruNZiyoBsBCe"
-              onChange={handleCaptchaChange}
-            />
-          </div>
+         <div className="min-h-screen font-poppins antialiased">
+      {!isVerified ? (
+        <div className="flex flex-col items-center justify-center h-screen bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark">
+          <h2 className="text-xl font-semibold mb-6">Verifikasi dulu ya sebelum masuk 👇</h2>
+          <ReCAPTCHA
+            sitekey="6Ld_roYrAAAAAEajwmObnx-ZkMfGruNZiyoBsBCe"
+            onChange={handleCaptchaChange}
+          />
+        </div>
         ) : (
           <>
             <Header />
