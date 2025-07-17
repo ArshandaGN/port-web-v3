@@ -13,6 +13,11 @@ import Spreadsheets from '../assets/Spreadsheets.png';
 import AppSheet from '../assets/AppSheets.png';
 import JavaScript from '../assets/JavaScript.png';
 import Figma from '../assets/figma.png';
+import project_cnn from '../assets/project_cnn.png';
+import project_Halallens from '../assets/project_Halallens.png';
+import project_nexor from '../assets/project_nexor.png';
+import project_kwn from '../assets/project_kwn.png';
+import sertifcpp from '../assets/Sertif_C++.jpg';
 
 // --- Data for Portfolio (Static) ---
 
@@ -146,7 +151,7 @@ export const portfolioData = {
     github: "https://github.com/ArshandaGN/cnn-comparison-trashnet-UAS-ML.git",
     link: "", // Tidak ada link demo
     category: "Machine Learning",
-    img: "/src/assets/project_cnn.png", // ganti nanti dengan gambar aktual
+    img: project_cnn, // ganti nanti dengan gambar aktual
   },
   {
     id: 2,
@@ -157,7 +162,7 @@ export const portfolioData = {
     github: "", // jika ada figma file public, bisa disisipkan
     link: "https://www.figma.com/proto/PVRAy6wONCIbVHNu4ptgSV/Slytherin?page-id=563%3A255&node-id=578-17&viewport=3355%2C-6154%2C0.41&t=YbPgzYrFeWn6S506-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=578%3A17&show-proto-sidebar=1", // jika nanti punya link demo atau figma public
     category: "UI/UX",
-    img: "/src/assets/project_Halallens.png", // placeholder
+    img: project_Halallens, // placeholder
   },
   {
     id: 3,
@@ -168,7 +173,7 @@ export const portfolioData = {
     github: "", // bukan project kode
     link: "https://lookerstudio.google.com/reporting/6b277e53-e918-4af2-b8d3-f956a5b1d2f5",
     category: "Data Visualization",
-    img: "/src/assets/project_nexor.png", // placeholder image dashboard
+    img: project_nexor, // placeholder image dashboard
   },
   {
     id: 4,
@@ -179,7 +184,7 @@ export const portfolioData = {
     github: "",
     link: "https://www.youtube.com/watch?v=tfikt73qMdQ", // YouTube video
     category: "Multimedia",
-    img: "/src/assets/project_kwn.png", // placeholder thumbnail
+    img: project_kwn, // placeholder thumbnail
   },
 ],
 
@@ -188,7 +193,7 @@ export const portfolioData = {
     {
       id: 1,
       title: "C++ Dasar - Skilvul",
-      img: "/src/assets/Sertif_C++.jpg", // nanti kamu ubah dari PDF ke PNG
+      img: sertifcpp, // nanti kamu ubah dari PDF ke PNG
       link: "https://skilvul.com/courses/c-plus-plus-dasar/student/clwmgqpkf01px01msojb403w1/",
     },
   ],
