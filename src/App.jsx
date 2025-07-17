@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext, useContext, useRef } from 'r
 import { Mail, Github, Linkedin, Instagram, FileText, Menu, X, Sun, Moon, Link as LinkIcon, Code, BookOpen, Briefcase, User, Star, MessageSquare, ChevronDown, ChevronRight, ChevronUp, Play, Lightbulb } from 'lucide-react'; // Added Lightbulb icon for project ideas
 import { motion, AnimatePresence, useInView} from 'framer-motion';
 import { Typewriter } from "react-simple-typewriter";
+import ReCAPTCHA from "react-google-recaptcha";
 
 // --- Global Context for Theme and Firebase ---
 const ThemeContext = createContext();
@@ -230,7 +231,7 @@ const Home = () => {
           <div className="flex justify-center md:justify-start space-x-5">
             {[
               { icon: "bx bx-envelope", url: "mailto:arshandagn06@gmail.com" },
-              { icon: "bx bxl-instagram", url: "https://www.instagram.com/arshndasvnch" },
+              { icon: "bx bxl-instagram", url: "https://www.instagram.com/arshndaagn" },
               { icon: "bx bxl-linkedin", url: "https://www.linkedin.com/in/arshandagn" },
             ].map((item, idx) => (
               <a
@@ -929,6 +930,14 @@ const Footer = () => {
 
 // Main App Component
 const App = () => {
+    const [isVerified, setIsVerified] = useState(false);
+
+    const handleCaptchaChange = (value) => {
+      if (value) {
+        setIsVerified(true);
+      }
+    };
+  
     // Memindahkan inisialisasi AOS ke dalam komponen App
     useEffect(() => {
         // Memuat script AOS dari CDN
@@ -1068,18 +1077,29 @@ const App = () => {
           `}
         </style>
         <div className="font-poppins antialiased min-h-screen">
-          <Header />
-          <main className="pt-8"> {/* Add padding-top to account for fixed header */}
-            <Home />
-            <About />
-            {/* <Education /> -- Removed as per request */}
-            <Skills />
-            <ExperienceSection />
-            <Projects />
-            <Contact />
-          </main>
-          <Footer />
-        </div>
+        {!isVerified ? (
+          <div className="flex flex-col items-center justify-center h-screen bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark">
+            <h2 className="text-xl font-semibold mb-6">Verifikasi dulu ya sebelum masuk 👇</h2>
+            <ReCAPTCHA
+              sitekey="6Ld_roYrAAAAAEajwmObnx-ZkMfGruNZiyoBsBCe"
+              onChange={handleCaptchaChange}
+            />
+          </div>
+        ) : (
+          <>
+            <Header />
+            <main className="pt-8">
+              <Home />
+              <About />
+              <Skills />
+              <ExperienceSection />
+              <Projects />
+              <Contact />
+            </main>
+            <Footer />
+          </>
+        )}
+      </div>
     </ThemeProvider>
   );
 };
