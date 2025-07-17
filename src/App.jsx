@@ -1074,30 +1074,36 @@ const App = () => {
             }
           `}
         </style>
-         <div className="min-h-screen font-poppins antialiased">
-      {!isVerified ? (
-        <div className="flex flex-col items-center justify-center h-screen bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark">
-          <h2 className="text-xl font-semibold mb-6">Verifikasi dulu ya sebelum masuk 👇</h2>
-          <ReCAPTCHA
-            sitekey="6Ld_roYrAAAAAEajwmObnx-ZkMfGruNZiyoBsBCe"
-            onChange={handleCaptchaChange}
-          />
+         <div className="relative font-poppins antialiased min-h-screen">
+          {!isVerified && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/40">
+              <div className="bg-white dark:bg-secondary-dark p-6 rounded-xl shadow-xl text-center max-w-sm w-full">
+                <h2 className="text-lg font-semibold text-text-light dark:text-text-dark mb-4">
+                  Verifikasi dulu ya sebelum masuk
+                </h2>
+                <ReCAPTCHA
+                  sitekey="6Ld_roYrAAAAAEajwmObnx-ZkMfGruNZiyoBsBCe"
+                  onChange={handleCaptchaChange}
+                />
+              </div>
+            </div>
+          )}
+
+          {isVerified && (
+            <>
+              <Header />
+              <main className="pt-8">
+                <Home />
+                <About />
+                <Skills />
+                <ExperienceSection />
+                <Projects />
+                <Contact />
+              </main>
+              <Footer />
+            </>
+          )}
         </div>
-        ) : (
-          <>
-            <Header />
-            <main className="pt-8">
-              <Home />
-              <About />
-              <Skills />
-              <ExperienceSection />
-              <Projects />
-              <Contact />
-            </main>
-            <Footer />
-          </>
-        )}
-      </div>
     </ThemeProvider>
   );
 };
