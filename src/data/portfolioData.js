@@ -146,7 +146,7 @@ export const portfolioData = {
     github: "https://github.com/ArshandaGN/cnn-comparison-trashnet-UAS-ML.git",
     link: "", // Tidak ada link demo
     category: "Machine Learning",
-    img: "/src/assets/project1.png", // ganti nanti dengan gambar aktual
+    img: "/src/assets/project_cnn.png", // ganti nanti dengan gambar aktual
   },
   {
     id: 2,
@@ -155,9 +155,9 @@ export const portfolioData = {
       "Kumpulan desain antarmuka aplikasi mobile menggunakan Figma, termasuk wireframe, user flow, dan prototipe interaktif. Desain mencakup halaman utama, fitur login, navigasi, dan halaman produk. Desain ini dibuat berdasarkan prinsip-prinsip UX seperti kemudahan penggunaan, konsistensi, dan visual hierarchy.",
     techStack: ["Figma", "UI/UX", "Prototyping"],
     github: "", // jika ada figma file public, bisa disisipkan
-    link: "", // jika nanti punya link demo atau figma public
+    link: "https://www.figma.com/proto/PVRAy6wONCIbVHNu4ptgSV/Slytherin?page-id=563%3A255&node-id=578-17&viewport=3355%2C-6154%2C0.41&t=YbPgzYrFeWn6S506-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=578%3A17&show-proto-sidebar=1", // jika nanti punya link demo atau figma public
     category: "UI/UX",
-    img: "/src/assets/project-uiux.png", // placeholder
+    img: "/src/assets/project_Halallens.png", // placeholder
   },
   {
     id: 3,
@@ -168,7 +168,7 @@ export const portfolioData = {
     github: "", // bukan project kode
     link: "https://lookerstudio.google.com/reporting/6b277e53-e918-4af2-b8d3-f956a5b1d2f5",
     category: "Data Visualization",
-    img: "/src/assets/project-looker.png", // placeholder image dashboard
+    img: "/src/assets/project_nexor.png", // placeholder image dashboard
   },
   {
     id: 4,
@@ -179,18 +179,7 @@ export const portfolioData = {
     github: "",
     link: "https://www.youtube.com/watch?v=tfikt73qMdQ", // YouTube video
     category: "Multimedia",
-    img: "/src/assets/project-video.png", // placeholder thumbnail
-  },
-  {
-    id: 5,
-    title: "Machero - Website Toko Roti",
-    description:
-      "Website statis sederhana untuk toko roti 'Machero', dibangun menggunakan HTML dan CSS. Menampilkan halaman beranda, galeri produk, dan informasi kontak. Dirancang dengan struktur layout yang rapi dan responsif sebagai latihan dasar pengembangan web.",
-    techStack: ["HTML", "CSS"],
-    github: "https://github.com/ArshandaGN/Praktikum-Pemweb.git",
-    link: "", // jika ada demo live bisa ditambahkan
-    category: "Web Development",
-    img: "/src/assets/project-machero.png", // ganti nanti kalau ada
+    img: "/src/assets/project_kwn.png", // placeholder thumbnail
   },
 ],
 
@@ -199,7 +188,7 @@ export const portfolioData = {
     {
       id: 1,
       title: "C++ Dasar - Skilvul",
-      img: "/src/assets/sertif-cpp.png", // nanti kamu ubah dari PDF ke PNG
+      img: "/src/assets/Sertif_C++.jpg", // nanti kamu ubah dari PDF ke PNG
       link: "https://skilvul.com/courses/c-plus-plus-dasar/student/clwmgqpkf01px01msojb403w1/",
     },
   ],
