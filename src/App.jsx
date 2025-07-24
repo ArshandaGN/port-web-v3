@@ -68,13 +68,13 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 w-full px-4 md:px-10 py-4 md:py-5 bg-primary-dark dark:bg-primary-dark flex justify-between items-center z-50 shadow-lg">
       {/* Logo */}
-      <a href="#home" className="text-2xl md:text-3xl font-bold text-accent-light dark:text-accent-light hover:text-accent-dark transition-colors duration-300">
+      <a href="#beranda" className="text-2xl md:text-3xl font-bold text-accent-light dark:text-accent-light hover:text-accent-dark transition-colors duration-300">
         Arshan.
       </a>
 
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center space-x-8">
-        {['Home', 'About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => ( // Removed Education
+        {['Beranda', 'Tentang', 'Skill', 'Pengalaman', 'Proyek', 'Kontak'].map((item) => ( // Removed Education
           <a
             key={item}
             href={`#${item.toLowerCase()}`}
@@ -120,7 +120,7 @@ const Header = () => {
       {isOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-primary-dark dark:bg-primary-dark shadow-md py-4">
           <nav className="flex flex-col items-center space-y-4">
-            {['Home', 'About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => ( // Removed Education
+            {['Home', 'Tentang', 'Skill', 'Pengalaman', 'Proyek', 'Kontak'].map((item) => ( // Removed Education
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
@@ -145,7 +145,7 @@ const Header = () => {
 const Home = () => {
   return (
     <section
-      id="home"
+      id="beranda"
       className="min-h-screen flex items-center justify-center py-20 px-6 sm:px-10 md:px-12 
         bg-gradient-to-b from-white via-[#eff6ff] to-[#f0f4fe]
         dark:from-[#081b29] dark:via-[#1e2a38] dark:to-black
@@ -201,7 +201,7 @@ const Home = () => {
 
           <div className="flex flex-wrap gap-3 mb-6 justify-center md:justify-start">
             <span className="px-3 py-1 bg-white/40 dark:bg-white/20 border border-white/40 dark:border-white/30 rounded-full text-sm font-medium text-primary-dark dark:text-white">
-              🚀 Open for Internship
+              🚀 Terbuka untuk magang
             </span>
             <span className="px-3 py-1 bg-white/40 dark:bg-white/20 border border-white/40 dark:border-white/30 rounded-full text-sm font-medium text-primary-dark dark:text-white">
               🎨 Design & Code
@@ -221,7 +221,7 @@ const Home = () => {
               <FileText size={20} className="mr-2" /> Lihat CV
             </a>
             <a
-              href="#contact"
+              href="#kontak"
               className="inline-flex items-center justify-center px-6 py-3 border-2 border-accent-light rounded-lg text-lg font-semibold text-accent-light hover:bg-accent-light hover:text-primary-dark transition-all duration-300 shadow-md"
             >
               <Mail size={20} className="mr-2" /> Kirim Pesan
@@ -255,7 +255,7 @@ const Home = () => {
 const About = () => {
   return (
     <section
-      id="about"
+      id="tentang"
       className="relative min-h-screen flex items-center py-20 px-6 sm:px-8 md:px-12 lg:px-16
         bg-gradient-to-b from-[#f0f4ff] via-[#dbeafe] to-primary-light
         dark:from-black dark:via-[#1e2a38] dark:to-[#081b29]
@@ -285,24 +285,24 @@ const About = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-primary-dark dark:text-white">
-            Kenalin, Aku Arshanda Geulis Nawajaputri 
+            Perkenalkan, Saya Arshanda Geulis Nawajaputri 
           </h2>
 
           <p className="text-base md:text-lg leading-relaxed text-text-secondary-light dark:text-text-secondary-dark mb-6">
-            Aku adalah mahasiswa <span className="font-semibold text-accent-light">Ilmu Komputer</span> yang sedang aktif mengembangkan diri
+            Saya adalah mahasiswa dari <span className="font-semibold text-accent-light">Universitas Pertamina</span> program studi <span className="font-semibold text-accent-light">Ilmu Komputer</span> yang sedang aktif mengembangkan diri
             di bidang <span className="font-semibold text-accent-light">Data Analysis</span>, <span className="font-semibold text-accent-light">UI/UX Design</span>, dan <span className="font-semibold text-accent-light">Front-End Development</span>.
-            Saat ini aku sedang mencari kesempatan untuk magang dan berkontribusi langsung di dunia kerja.
+            Saat ini saya sedang mencari kesempatan untuk magang dan berkontribusi langsung di dunia kerja.
           </p>
 
           <p className="text-base md:text-lg leading-relaxed text-text-secondary-light dark:text-text-secondary-dark mb-6">
-            Aku terbiasa menggunakan tools seperti <span className="font-semibold">Python, Figma, JavaScript</span>, dan berbagai alat
-            kolaborasi lainnya. Selain itu, aku aktif dalam organisasi kampus dan punya semangat belajar yang tinggi.
+            Saya terbiasa menggunakan tools seperti <span className="font-semibold">Python, Figma, JavaScript</span>, dan berbagai alat
+            kolaborasi lainnya. Selain itu, saya aktif dalam organisasi kampus dan memiliki semangat belajar yang tinggi.
           </p>
 
           <div className="flex flex-wrap gap-3 mt-4">
-            <span className="px-3 py-1 bg-accent-light text-white rounded-full text-sm font-medium">Open for Internship</span>
+            <span className="px-3 py-1 bg-accent-light text-white rounded-full text-sm font-medium">Terbuka untuk magang</span>
             <span className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-sm font-medium">Data & Front-End</span>
-            <span className="px-3 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full text-sm font-medium">Creative Problem Solver</span>
+            <span className="px-3 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full text-sm font-medium">Siap bekerja sama</span>
           </div>
         </motion.div>
       </div>
@@ -336,7 +336,7 @@ const Skills = () => {
 
   return (
     <section
-      id="skills"
+      id="skill"
       className="relative py-20 px-6 sm:px-8 md:px-12 bg-gradient-to-b from-primary-light via-blue-50 to-secondary-light dark:from-primary-dark dark:via-gray-800 dark:to-black text-text-light dark:text-text-dark"
     >
       {/* Blob Background */}
@@ -457,7 +457,7 @@ const ExperienceSection = () => {
 
   return (
     <section
-      id="experience"
+      id="pengalaman"
       className="relative py-20 px-6 sm:px-8 md:px-12 bg-gradient-to-b from-secondary-light via-[#e6f0ff] to-primary-light dark:from-black dark:via-[#0f172a] dark:to-[#081b29] text-primary-dark dark:text-text-dark transition-all"
     >
       <div className="relative z-10 max-w-7xl mx-auto text-center">
@@ -495,7 +495,7 @@ const ExperienceSection = () => {
                 onClick={() => toggleAccordion(index)}
                 className="mt-auto flex justify-between items-center px-4 py-2 bg-primary-light dark:bg-primary-dark text-accent-light dark:text-accent-light rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
               >
-                Job Description
+                Deskripsi pekerjaan
                 {openIndex === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
               </button>
 
@@ -547,7 +547,7 @@ const Projects = () => {
 
   return (
     <section
-      id="projects"
+      id="proyek"
       className="relative py-20 px-6 sm:px-8 md:px-12 bg-gradient-to-b from-primary-light via-blue-50 to-secondary-light dark:from-primary-dark dark:via-gray-800 dark:to-black text-text-light dark:text-text-dark"
     >
       {/* Blob Background */}
@@ -802,7 +802,7 @@ const Contact = () => {
   ];
 
   return (
-     <section id="contact" className="relative py-24 px-6 md:px-10 bg-gradient-to-b from-secondary-light via-[#f8fbff] to-secondary-light dark:from-black dark:via-[#0f172a] dark:to-secondary-dark text-text-light dark:text-text-dark transition-all"
+     <section id="kontak" className="relative py-24 px-6 md:px-10 bg-gradient-to-b from-secondary-light via-[#f8fbff] to-secondary-light dark:from-black dark:via-[#0f172a] dark:to-secondary-dark text-text-light dark:text-text-dark transition-all"
       ><div className="max-w-6xl mx-auto">
         <motion.h2
           className="text-4xl md:text-5xl font-bold text-center mb-4 text-primary-dark dark:text-text-dark"

@@ -18,6 +18,8 @@ import project_Halallens from '../assets/project_Halallens.png';
 import project_nexor from '../assets/project_nexor.png';
 import project_kwn from '../assets/project_kwn.png';
 import sertifcpp from '../assets/Sertif_C++.jpg';
+import project_quis from '../assets/project_quiz.png';
+import project_mac from '../assets/project_mac.png';
 
 // --- Data for Portfolio (Static) ---
 
@@ -186,6 +188,30 @@ export const portfolioData = {
     category: "Multimedia",
     img: project_kwn, // placeholder thumbnail
   },
+  {
+    id: 5,
+    title: "Website App-Quiz",
+    description:
+      "Sebuah aplikasi kuis berbasis web yang dibangun menggunakan HTML, Tailwind CSS, dan JavaScript. Aplikasi ini memiliki fitur validasi nama pengguna, sistem skor berdasarkan level (mudah, sedang, sulit), timer soal, penyimpanan skor dengan localStorage, serta leaderboard interaktif. Aplikasi dirancang untuk pengguna anak-anak dengan antarmuka yang menarik dan ramah pengguna.",
+    techStack: ["HTML", "Tailwind CSS", "JavaScript"],
+    github: "https://github.com/ArshandaGN/App-Quiz.git", // isi dengan link GitHub jika tersedia
+    link: "https://app-quiz-two.vercel.app/", // sesuaikan jika sudah dideploy ke Vercel atau lainnya
+    category: "Web",
+    img: project_quis, // placeholder, sesuaikan dengan nama asset gambar yang kamu pakai
+},
+
+  {
+  id: 6,
+  title: "Website Company Profile Mama Ajeng Cookies & Cake",
+  description:
+    "Sebuah website statis untuk mempromosikan usaha rumahan Mama Ajeng Cookies & Cake. Dibuat menggunakan HTML, CSS, dan JavaScript, website ini menampilkan informasi usaha, galeri produk, layanan, serta form feedback yang langsung terhubung ke WhatsApp pemilik usaha. Proyek ini bertujuan membantu UMKM tampil profesional secara digital.",
+  techStack: ["HTML", "CSS", "JavaScript"],
+  github: "https://github.com/ArshandaGN/Compro_MAC.git", // ganti kalau repo beda
+  link: "https://compro-mac.vercel.app/", // bisa diisi kalau nanti upload ke Netlify/Vercel
+  category: "Web",
+  img: project_mac, // ganti dengan nama gambar di assets (misal: project_MAC.jpg/png)
+},
+
 ],
 
 
